@@ -40,7 +40,7 @@ server.get('/api/users/:id', (req, res) => {
         if (user) {
             res.status(200).json(user)
         } else {
-            res.status(404).json({ message: "The user with the specified ID does not exist." })
+            res.status(404).json({ errorMessage: "The user with the specified ID does not exist." })
         }
     })
     .catch(() => {
@@ -48,6 +48,20 @@ server.get('/api/users/:id', (req, res) => {
     });
 });
 
+server.delete('/api/users/:id', (req, res) => {
+    const userID = req.params.id;
+    Users.remove(userID)
+    .then(id => {
+        if (id === id || id > 0) {
+            res.status(200).json({message: 'User deleted.'})
+        } else {
+            res.status(404).json({ errormessage: "The user with the specified ID does not exist." })
+        }
+    })
+    .catch(() => {
+        res.status(500).json({ errorMessage: 'The user could not be removed' });
+    });
+});
 
 
 
